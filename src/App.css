@@ -95,6 +95,8 @@ body {
   width: 105px;
   display: inline-block;
   text-align: center;
+  /* transform: translateX(0); */
+  transition: transform 1s;
 }
 
 .hourly p {
@@ -111,6 +113,34 @@ body {
   background-color: #1b98e0a8;
   border-radius: 10px;
   padding: 1px;
+  height: 135px;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.right_arrow {
+  position: absolute;
+  width: 30px;
+  top: 50px;
+  right: 0px;
+  z-index: 10;
+}
+.right_arrow:hover,
+.right_arrow:active {
+  cursor: pointer;
+}
+
+.left_arrow {
+  position: absolute;
+  width: 30px;
+  top: 50px;
+  left: 0px;
+  z-index: 10;
+}
+.left_arrow:hover,
+.left_arrow:active {
+  cursor: pointer;
 }
 
 .hourly img {
@@ -125,4 +155,8 @@ body {
 
 .loading {
   font-size: xx-large;
+}
+
+.rightward {
+  transform: translateX(-530px);
 }

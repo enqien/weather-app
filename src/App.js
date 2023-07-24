@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import weather_code from "./assets/weather_code.json";
+import right_arrow from "./image/right-arrow (1).png";
+import left_arrow from "./image/left-arrow.png";
 
 const weekday = [
   "Sunday",
@@ -19,6 +21,7 @@ const formatDate = (dateString) => {
 
 function App() {
   const [info, setInfo] = useState(null);
+  const [toTheRight, setToTheRight] = useState(false);
   function fetchHandler() {
     fetch(
       "https://api.open-meteo.com/v1/forecast?latitude=22.5455&longitude=114.0683&hourly=temperature_2m,relativehumidity_2m,rain,weathercode,windspeed_10m,uv_index&daily=sunrise,sunset,uv_index_max&current_weather=true&timezone=auto"
@@ -30,6 +33,13 @@ function App() {
       });
   }
 
+  function handleRight() {
+    setToTheRight(true);
+  }
+
+  function handleLeft() {
+    setToTheRight(false);
+  }
   useEffect(() => {
     fetchHandler();
     // console.log(weather_code[info.current_weather.weathercode]);
@@ -137,10 +147,20 @@ function App() {
         </div>
 
         <div className="row" id="hourly_row">
+          <img
+            className="left_arrow"
+            src={left_arrow}
+            onClick={handleLeft}
+          ></img>
+          <img
+            className="right_arrow"
+            src={right_arrow}
+            onClick={handleRight}
+          ></img>
           {info.hourly.time.map((time, index) => {
             if (
               index < formatDate(info.current_weather.time).getHours() ||
-              index > formatDate(info.current_weather.time).getHours() + 10
+              index > formatDate(info.current_weather.time).getHours() + 15
             ) {
               return null;
             }
@@ -150,6 +170,7 @@ function App() {
                 time={formatDate(time).getHours()}
                 weather_code={info.hourly.weathercode[index]}
                 temperature={info.hourly.temperature_2m[index]}
+                toTheRight={toTheRight}
               />
             );
           })}
@@ -163,7 +184,7 @@ export default App;
 
 function Hourly_card(props) {
   return (
-    <div className="hourly">
+    <div className={`hourly ${props.toTheRight ? "rightward" : ""}`}>
       <p>{props.time}</p>
       <img src={weather_code[props.weather_code].day.image}></img>
       <h1>{props.temperature}°</h1>
